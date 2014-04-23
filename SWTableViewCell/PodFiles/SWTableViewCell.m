@@ -399,11 +399,18 @@
 - (void)hideUtilityButtons
 {
     if (_cellState != kCellStateCenter) {
-        [self _hideUtilityButtons];
+        [self updateUtilityButtonsWithCellState:kCellStateCenter];
     }
 }
 
-- (void)_hideUtilityButtons
+- (void)showUtilityButtonsWithCellState:(SWCellState)cellState
+{
+    if (cellState != kCellStateCenter) {
+        [self updateUtilityButtonsWithCellState:cellState];
+    }
+}
+
+- (void)updateUtilityButtonsWithCellState:(SWCellState)cellState
 {
     [UIView animateWithDuration:kUtilityButtonsAnimationDuration
                           delay:0.0
@@ -411,23 +418,13 @@
           initialSpringVelocity:0.f
                         options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionCurveEaseOut
                      animations:^{
-                         [self.cellScrollView setContentOffset:[self contentOffsetForCellState:kCellStateCenter]];
+                         [self.cellScrollView setContentOffset:[self contentOffsetForCellState:cellState]];
                          [self layoutIfNeeded];
                      } completion:nil];
-}
-
-- (void)showUtilityButtons
-{
-    if (_cellState != kCellStateCenter) {
-        [UIView animateWithDuration:kUtilityButtonsAnimationDuration
-                              delay:0.0
-             usingSpringWithDamping:1.f
-              initialSpringVelocity:0.f
-                            options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionCurveEaseOut
-                         animations:^{
-                             [self.cellScrollView setContentOffset:[self contentOffsetForCellState:_cellState]];
-                             [self layoutIfNeeded];
-                         } completion:nil];
+    
+    if ([self.delegate respondsToSelector:@selector(swipeableTableViewCell:scrollingToState:)])
+    {
+        [self.delegate swipeableTableViewCell:self scrollingToState:cellState];
     }
 }
 
@@ -541,18 +538,13 @@
         }
     }
     
-    if ([self.delegate respondsToSelector:@selector(swipeableTableViewCell:scrollingToState:)])
-    {
-        [self.delegate swipeableTableViewCell:self scrollingToState:_cellState];
-    }
-    
     if (_cellState == kCellStateCenter)
     {
-        [self _hideUtilityButtons];
+        [self updateUtilityButtonsWithCellState:_cellState];
     }
     else
     {
-        [self showUtilityButtons];
+        [self showUtilityButtonsWithCellState:_cellState];
         
         if ([self.delegate respondsToSelector:@selector(swipeableTableViewCellShouldHideUtilityButtonsOnSwipe:)])
         {
