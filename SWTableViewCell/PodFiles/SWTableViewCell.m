@@ -420,7 +420,13 @@
                      animations:^{
                          [self.cellScrollView setContentOffset:[self contentOffsetForCellState:cellState]];
                          [self layoutIfNeeded];
-                     } completion:nil];
+                     } completion:^(BOOL finished) {
+                         if (finished
+                             && [self.delegate respondsToSelector:@selector(swipeableTableViewCell:didEndAnimationWithState:)])
+                         {
+                             [self.delegate swipeableTableViewCell:self didEndAnimationWithState:cellState];
+                         }
+                     }];
     
     if ([self.delegate respondsToSelector:@selector(swipeableTableViewCell:scrollingToState:)])
     {
