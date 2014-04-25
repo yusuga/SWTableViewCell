@@ -217,6 +217,22 @@
     [self layoutIfNeeded];
 }
 
+- (void)replaceLeftUtitilyButtonsAtIndex:(NSUInteger)index withObject:(UIButton *)button
+{
+    NSMutableArray *buttons = _leftUtilityButtons.mutableCopy;
+    [buttons replaceObjectAtIndex:index withObject:button];
+    _leftUtilityButtons = buttons;
+    self.leftUtilityButtonsView.utilityButtons = buttons;
+}
+
+- (void)replaceRightUtitilyButtonsAtIndex:(NSUInteger)index withObject:(UIButton *)button
+{
+    NSMutableArray *buttons = _rightUtilityButtons.mutableCopy;
+    [buttons replaceObjectAtIndex:index withObject:button];
+    _rightUtilityButtons = buttons;
+    self.rightUtilityButtonsView.utilityButtons = buttons;
+}
+
 #pragma mark - UITableViewCell overrides
 
 - (void)didMoveToSuperview

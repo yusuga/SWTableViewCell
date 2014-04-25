@@ -38,6 +38,8 @@ typedef NS_ENUM(NSInteger, SWCellState)
 
 @property (nonatomic, copy) NSArray *leftUtilityButtons;
 @property (nonatomic, copy) NSArray *rightUtilityButtons;
+- (void)replaceLeftUtitilyButtonsAtIndex:(NSUInteger)index withObject:(UIButton*)button;
+- (void)replaceRightUtitilyButtonsAtIndex:(NSUInteger)index withObject:(UIButton*)button;
 @property (nonatomic, weak) id <SWTableViewCellDelegate> delegate;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier containingTableView:(UITableView *)containingTableView leftUtilityButtons:(NSArray *)leftUtilityButtons rightUtilityButtons:(NSArray *)rightUtilityButtons;
