@@ -46,4 +46,7 @@ typedef NS_ENUM(NSInteger, SWCellState)
 
 - (void)hideUtilityButtons;
 
++ (void)setCustumMinimumCellWidthOfShownUtitilyButtons:(CGFloat)width;
++ (CGFloat)custumMinimumCellWidthOfShownUtitilyButtons;
+
 @end

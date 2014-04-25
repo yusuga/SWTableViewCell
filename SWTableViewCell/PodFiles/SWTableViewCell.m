@@ -14,6 +14,8 @@
 #define kLongPressMinimumDuration 0.16f
 #define kUtilityButtonsAnimationDuration 0.6
 
+static CGFloat __custumMinimumCellWidthOfShownUtitilyButtons;
+
 @interface SWTableViewCell () <UIScrollViewDelegate,  UIGestureRecognizerDelegate>
 
 @property (nonatomic, weak) UITableView *containingTableView;
@@ -41,6 +43,16 @@
 @end
 
 @implementation SWTableViewCell
+
++ (void)setCustumMinimumCellWidthOfShownUtitilyButtons:(CGFloat)width
+{
+    __custumMinimumCellWidthOfShownUtitilyButtons = width;
+}
+
++ (CGFloat)custumMinimumCellWidthOfShownUtitilyButtons
+{
+    return __custumMinimumCellWidthOfShownUtitilyButtons;
+}
 
 #pragma mark Initializers
 
@@ -175,7 +187,7 @@
                                [NSLayoutConstraint constraintWithItem:buttonView attribute:alignmentAttribute relatedBy:NSLayoutRelationEqual toItem:clipView attribute:alignmentAttribute multiplier:1.0 constant:0.0],
                                
                                // Constrain the maximum button width so that at least a button's worth of contentView is left visible. (The button view will shrink accordingly.)
-                               [NSLayoutConstraint constraintWithItem:buttonView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationLessThanOrEqual toItem:self.contentView attribute:NSLayoutAttributeWidth multiplier:1.0 constant:-kUtilityButtonWidthDefault],
+                               [NSLayoutConstraint constraintWithItem:buttonView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationLessThanOrEqual toItem:self.contentView attribute:NSLayoutAttributeWidth multiplier:1.0 constant:__custumMinimumCellWidthOfShownUtitilyButtons == 0 ? -kUtilityButtonWidthDefault : -__custumMinimumCellWidthOfShownUtitilyButtons],
                                ]];
     }
 }
