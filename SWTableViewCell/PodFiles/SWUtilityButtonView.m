@@ -47,6 +47,12 @@
         _parentCell = parentCell;
         self.utilityButtonSelector = utilityButtonSelector;
         self.utilityButtons = utilityButtons;
+        
+        SWUtilityButtonTapGestureRecognizer *utilityButtonTapGestureRecognizer = [[SWUtilityButtonTapGestureRecognizer alloc] initWithTarget:_parentCell
+                                                                                                                                      action:_utilityButtonSelector];
+        utilityButtonTapGestureRecognizer.buttonIndex = NSUIntegerMax;
+        [self addGestureRecognizer:utilityButtonTapGestureRecognizer];
+
     }
     
     return self;
@@ -89,12 +95,21 @@
                                                                              metrics:nil
                                                                                views:NSDictionaryOfVariableBindings(precedingView, button)]];
             }
-            
-            [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[button]|"
-                                                                         options:0L
-                                                                         metrics:nil
-                                                                           views:NSDictionaryOfVariableBindings(button)]];
-            
+
+            if (self.utilityButtonsCenteringEnable) {                
+                [self addConstraint:[NSLayoutConstraint constraintWithItem:self
+                                                                 attribute:NSLayoutAttributeCenterY
+                                                                 relatedBy:NSLayoutRelationLessThanOrEqual
+                                                                    toItem:button
+                                                                 attribute:NSLayoutAttributeCenterY
+                                                                multiplier:1.0
+                                                                  constant:0.0]];
+            } else {
+                [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[button]|"
+                                                                             options:0L
+                                                                             metrics:nil
+                                                                               views:NSDictionaryOfVariableBindings(button)]];
+            }
 
             SWUtilityButtonTapGestureRecognizer *utilityButtonTapGestureRecognizer = [[SWUtilityButtonTapGestureRecognizer alloc] initWithTarget:_parentCell
                                                                                                                                           action:_utilityButtonSelector];

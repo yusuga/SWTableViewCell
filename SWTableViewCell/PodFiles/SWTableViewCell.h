@@ -38,7 +38,9 @@ typedef NS_ENUM(NSInteger, SWCellState)
 
 @property (nonatomic, assign) SWCellState cellState; // The state of the cell within the scroll view, can be left, right or middle
 @property (nonatomic, copy) NSArray *leftUtilityButtons;
+- (void)setLeftUtilityButtons:(NSArray *)leftUtilityButtons centering:(BOOL)centering;
 @property (nonatomic, copy) NSArray *rightUtilityButtons;
+- (void)setRightUtilityButtons:(NSArray *)rightUtilityButtons centering:(BOOL)centering;
 - (void)replaceLeftUtitilyButtonsAtIndex:(NSUInteger)index withObject:(UIButton*)button;
 - (void)replaceRightUtitilyButtonsAtIndex:(NSUInteger)index withObject:(UIButton*)button;
 @property (nonatomic, weak) id <SWTableViewCellDelegate> delegate;

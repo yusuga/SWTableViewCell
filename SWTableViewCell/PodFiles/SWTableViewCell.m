@@ -219,6 +219,12 @@ static CGFloat __custumMinimumCellWidthOfShownUtitilyButtons;
     [self layoutIfNeeded];
 }
 
+- (void)setLeftUtilityButtons:(NSArray *)leftUtilityButtons centering:(BOOL)centering
+{
+    self.leftUtilityButtonsView.utilityButtonsCenteringEnable = centering;
+    [self setLeftUtilityButtons:leftUtilityButtons];
+}
+
 - (void)setRightUtilityButtons:(NSArray *)rightUtilityButtons
 {
     _rightUtilityButtons = rightUtilityButtons;
@@ -226,6 +232,12 @@ static CGFloat __custumMinimumCellWidthOfShownUtitilyButtons;
     self.rightUtilityButtonsView.utilityButtons = rightUtilityButtons;
     
     [self layoutIfNeeded];
+}
+
+- (void)setRightUtilityButtons:(NSArray *)rightUtilityButtons centering:(BOOL)centering
+{
+    self.rightUtilityButtonsView.utilityButtonsCenteringEnable = centering;
+    [self setRightUtilityButtons:rightUtilityButtons];
 }
 
 - (void)replaceLeftUtitilyButtonsAtIndex:(NSUInteger)index withObject:(UIButton *)button

@@ -11,7 +11,7 @@
 
 #define kUtilityButtonWidthDefault 90
 
-@interface SWUtilityButtonView : UIView
+@interface SWUtilityButtonView : UIControl
 
 - (id)initWithUtilityButtons:(NSArray *)utilityButtons parentCell:(SWTableViewCell *)parentCell utilityButtonSelector:(SEL)utilityButtonSelector;
 - (id)initWithFrame:(CGRect)frame utilityButtons:(NSArray *)utilityButtons parentCell:(SWTableViewCell *)parentCell utilityButtonSelector:(SEL)utilityButtonSelector;
@@ -22,5 +22,7 @@
 
 - (void)pushBackgroundColors;
 - (void)popBackgroundColors;
+
+@property (nonatomic) BOOL utilityButtonsCenteringEnable;
 
 @end
