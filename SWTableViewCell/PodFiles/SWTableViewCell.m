@@ -8,7 +8,6 @@
 
 #import "SWTableViewCell.h"
 #import <UIKit/UIGestureRecognizerSubclass.h>
-#import "SWUtilityButtonView.h"
 
 #define kSectionIndexWidth 15
 #define kLongPressMinimumDuration 0.16f
