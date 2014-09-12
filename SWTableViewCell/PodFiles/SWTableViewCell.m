@@ -40,7 +40,9 @@ static CGFloat __custumMinimumCellWidthOfShownUtitilyButtons;
 
 @end
 
-@implementation SWTableViewCell
+@implementation SWTableViewCell {
+    UIView *_contentCellView;
+}
 
 + (void)setCustumMinimumCellWidthOfShownUtitilyButtons:(CGFloat)width
 {
@@ -113,7 +115,26 @@ static CGFloat __custumMinimumCellWidthOfShownUtitilyButtons;
     self.cellScrollView.showsHorizontalScrollIndicator = NO;
     self.cellScrollView.scrollsToTop = NO;
     self.cellScrollView.scrollEnabled = YES;
-    [self addSubview:self.cellScrollView]; // in fact inserts into first subview, which is a private UITableViewCellScrollView.
+    
+    _contentCellView = [[UIView alloc] init];
+    [self.cellScrollView addSubview:_contentCellView];
+    
+    // Add the cell scroll view to the cell
+    UIView *contentViewParent = self;
+    UIView *clipViewParent = self.cellScrollView;
+    
+    if (![NSStringFromClass([[self.subviews objectAtIndex:0] class]) hasSuffix:@"ContentView"])
+    {
+        // iOS 7
+        contentViewParent = [self.subviews objectAtIndex:0];
+        clipViewParent = self;
+    }
+    NSArray *cellSubviews = [contentViewParent subviews];
+    [self insertSubview:self.cellScrollView atIndex:0];
+    for (UIView *subview in cellSubviews)
+    {
+        [_contentCellView addSubview:subview];
+    }
     
     // Set scroll view to perpetually have same frame as self. Specifying relative to superview doesn't work, since the latter UITableViewCellScrollView has different behaviour.
     [self addConstraints:@[
@@ -145,7 +166,7 @@ static CGFloat __custumMinimumCellWidthOfShownUtitilyButtons;
                                                                            parentCell:self
                                                                 utilityButtonSelector:@selector(leftUtilityButtonHandler:)];
     
-    self.rightUtilityClipView = [[UIView alloc] init];
+    self.rightUtilityClipView = [[UIView alloc] initWithFrame:self.bounds];
     self.rightUtilityClipConstraint = [NSLayoutConstraint constraintWithItem:self.rightUtilityClipView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeRight multiplier:1.0 constant:0.0];
     self.rightUtilityButtonsView = [[SWUtilityButtonView alloc] initWithUtilityButtons:nil
                                                                             parentCell:self
@@ -165,10 +186,12 @@ static CGFloat __custumMinimumCellWidthOfShownUtitilyButtons;
         UIView *buttonView = buttonViews[i];
         NSLayoutAttribute alignmentAttribute = alignmentAttributes[i];
         
+        clipConstraint.priority = UILayoutPriorityDefaultHigh;
+        
         clipView.translatesAutoresizingMaskIntoConstraints = NO;
         clipView.clipsToBounds = YES;
         
-        [self addSubview:clipView];
+        [clipViewParent addSubview:clipView];
         [self addConstraints:@[
                                // Pin the clipping view to the appropriate outer edges of the cell.
                                [NSLayoutConstraint constraintWithItem:clipView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0],
